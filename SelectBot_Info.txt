@@ -1,6 +1,6 @@
 [General]
-DisplayVers=3.8.6
+DisplayVers=4.0.8 alpha
 [Changelog]
-Title=Whats new in 3.8.6 ?
-Message=- Add Hide Android Option (May need to delete Profiles and create new if not working)
-Date=12th November 2017
+Title=Whats new in 4.0.8 (aplha)?
+Message=- ADD Bluestack 4 Support, Deleted the Emulator's Download.
+Date=Feb 28, 2020

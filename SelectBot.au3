@@ -4,9 +4,9 @@
 #AutoIt3Wrapper_Outfile=SelectBot.Exe
 #AutoIt3Wrapper_Compression=4
 #AutoIt3Wrapper_UseUpx=y
-#AutoIt3Wrapper_Res_Comment=For MyBot.run. Made by Fliegerfaust
+#AutoIt3Wrapper_Res_Comment=For MyBot.run. Made by BlakeBill Based on Fliegerfaust's Code.
 #AutoIt3Wrapper_Res_Description=SelectBot for MyBot
-#AutoIt3Wrapper_Res_Fileversion=3.8.6.0
+#AutoIt3Wrapper_Res_Fileversion=4.0.8.0 (alpha)
 #AutoIt3Wrapper_Res_LegalCopyright=Fliegerfaust
 #AutoIt3Wrapper_Run_Tidy=y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
@@ -46,7 +46,7 @@
 
 Global $g_sBotFile = "mybot.run.exe"
 Global $g_sBotFileAU3 = "mybot.run.au3"
-Global $g_sVersion = "3.8.6"
+Global $g_sVersion = "4.0.8 alpha"
 Global $g_sDirProfiles = @MyDocumentsDir & "\Profiles.ini"
 Global $g_hGui_Main, $g_hGui_Profile, $g_hGui_Emulator, $g_hGui_Instance, $g_hGui_Dir, $g_hGui_Parameter, $g_hGUI_AutoStart, $g_hGUI_Edit, $g_hListview_Main, $g_hLst_AutoStart, $g_hLog, $g_hProgress, $g_hBtn_Shortcut, $g_hBtn_AutoStart, $g_hContext_Main
 Global $g_hListview_Instances, $g_hLblUpdateAvailable
@@ -87,15 +87,6 @@ Func GUI_Main()
 	$hMenu_ForumTopic = GUICtrlCreateMenuItem("Forum Topic", $hMenu_Help)
 	$hMenu_Documents = GUICtrlCreateMenuItem("Profile Directory", $hMenu_Help)
 	$hMenu_Startup = GUICtrlCreateMenuItem("Startup Directory", $hMenu_Help)
-	$hMenu_Emulators = GUICtrlCreateMenu("&Emulators")
-	$hMenu_BlueStacks1 = GUICtrlCreateMenuItem("BlueStacks", $hMenu_Emulators)
-	$hMenu_BlueStacks2 = GUICtrlCreateMenuItem("BlueStacks2", $hMenu_Emulators)
-	$hMenu_MEmu = GUICtrlCreateMenuItem("MEmu", $hMenu_Emulators)
-	$hMenu_Droid4X = GUICtrlCreateMenuItem("Droid4X", $hMenu_Emulators)
-	$hMenu_Nox = GUICtrlCreateMenuItem("Nox", $hMenu_Emulators)
-	$hMenu_LeapDroid = GUICtrlCreateMenuItem("LeapDroid", $hMenu_Emulators)
-	$hMenu_KOPLAYER = GUICtrlCreateMenuItem("KOPLAYER", $hMenu_Emulators)
-	$hMenu_iTools = GUICtrlCreateMenuItem("iTools", $hMenu_Emulators)
 	$hMenu_Update = GUICtrlCreateMenu("Updates")
 	$hMenu_CheckForUpdate = GUICtrlCreateMenuItem("Check for Updates", $hMenu_Update)
 	$hMenu_Misc = GUICtrlCreateMenu("Misc")
@@ -147,34 +138,10 @@ Func GUI_Main()
 					Case $hMenu_Startup
 						ShellExecute(@StartupDir)
 
-					Case $hMenu_BlueStacks1
-						ShellExecute("https://mega.nz/#!GFVilDAL!Wkyp2xpxFOx8J_Gz8wIf0jGSxTT3IiT6xthvrHhRbME")
-
-					Case $hMenu_BlueStacks2
-						ShellExecute("https://mega.nz/#!BpdEUBbZ!4unxWMPzA5rESONTVgNrxlNxSj8H2wwicx4Q15PmBo4")
-
-					Case $hMenu_MEmu
-						ShellExecute("http://www.memuplay.com/download.php?file_name=Memu-Setup&from=home_en")
-
-					Case $hMenu_Droid4X
-						ShellExecute("http://dl.haima.me/download/DXDown/win/Z001/Droid4XInstaller.exe")
-
-					Case $hMenu_Nox
-						ShellExecute("http://en.bignox.com/en/download/fullPackage")
-
-					Case $hMenu_LeapDroid
-						ShellExecute("http://www.leapdroid.com/installer/current/LeapdroidVMInstallerFull.exe")
-
-					Case $hMenu_KOPLAYER
-						ShellExecute("http://down1.koplayer.com/Emulator/koplayer-1.4.1049.exe")
-
-					Case $hMenu_iTools
-						ShellExecute("http://pro.itools.cn/simulate/")
-
 					Case $hMenu_CheckForUpdate
 
 						$sTempPath = _WinAPI_GetTempFileName(@TempDir)
-						$hUpdateFile = InetGet("https://raw.githubusercontent.com/Fliegerfaust33/SelectBot/master/SelectBot_Info.txt", $sTempPath, $INET_FORCERELOAD, $INET_DOWNLOADBACKGROUND)
+						$hUpdateFile = InetGet("https://raw.githubusercontent.com/blakebill/SelectBot/master/SelectBot_Info.txt", $sTempPath, $INET_FORCERELOAD, $INET_DOWNLOADBACKGROUND)
 						Do
 							Sleep(250)
 						Until InetGetInfo($hUpdateFile, $INET_DOWNLOADCOMPLETE)
@@ -314,7 +281,7 @@ EndFunc   ;==>GUI_Profile
 Func GUI_Emulator()
 	$g_hGui_Emulator = GUICreate("Emulator", 258, 167, $g_aGuiPos_Main[0], $g_aGuiPos_Main[1] + 150, -1, -1, $g_hGui_Main)
 	$hCmb_Emulator = GUICtrlCreateCombo("BlueStacks", 24, 72, 201, 21, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-	GUICtrlSetData(-1, "BlueStacks2|BlueStacks3|MEmu|Droid4X|Nox|LeapDroid|KOPLAYER|iTools")
+	GUICtrlSetData(-1, "BlueStacks2|BlueStacks3|BlueStacks4|MEmu|Droid4X|Nox|LeapDroid|KOPLAYER|iTools")
 	$hBtn_Next = GUICtrlCreateButton("Next step", 72, 120, 97, 25, $WS_GROUP)
 	GUICtrlCreateLabel("Please select your Emulator", 24, 8, 204, 57)
 	GUISetState()
@@ -367,6 +334,10 @@ Func GUI_Instance()
 			GUISetState(@SW_SHOW, $g_hGui_Instance)
 			GUICtrlSetData($hLbl_Instance, "Please type in your BlueStacks3 Instance Name! Example: Android , Android_1, Android_2, etc")
 			GUICtrlSetData($hIpt_Instance, "Android_")
+		Case "Bluestacks4"
+			GUISetState(@SW_SHOW, $g_hGui_Instance)
+			GUICtrlSetData($hLbl_Instance, "Please type in your BlueStacks4 Instance Name! Example: Android , Android_1, Android_2, etc")
+			GUICtrlSetData($hIpt_Instance, "Android_")
 		Case "MEmu"
 			GUISetState(@SW_SHOW, $g_hGui_Instance)
 			GUICtrlSetData($hLbl_Instance, "Please type in your MEmu Instance Name! Example: MEmu , MEmu_1, MEmu_2, etc")
@@ -406,6 +377,8 @@ Func GUI_Instance()
 				Switch $g_sSelectedEmulator
 					Case "BlueStacks3"
 						$Instance = StringRegExp($Instances, "(?i)" & "Android" & "(?:[_][0-9])?", 3)
+					Case "BlueStacks4"
+						$Instance = StringRegExp($Instances, "(?i)" & "Android" & "(?:[_][0-9])?", 3)		
 					Case "iTools"
 						$Instance = StringRegExp($Instances, "(?)iToolsVM(?:[_][0-9][0-9])?", 3)
 					Case "LeapDroid"
@@ -608,25 +581,27 @@ Func GUI_Edit()
 
 	Switch $g_sIniEmulator
 		Case "BlueStacks"
-			GUICtrlSetData($hCmb_Emulator, "BlueStacks2|BlueStacks3|MEmu|Droid4X|Nox|LeapDroid|KOPLAYER|iTools")
+			GUICtrlSetData($hCmb_Emulator, "BlueStacks2|BlueStacks3|BlueStacks4|MEmu|Droid4X|Nox|LeapDroid|KOPLAYER|iTools")
 			GUICtrlSetState($hIpt_Instance, $GUI_DISABLE)
 		Case "BlueStacks2"
-			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks3|MEmu|Droid4X|Nox|LeapDroid|KOPLAYER|iTools")
+			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks3|BlueStacks4|MEmu|Droid4X|Nox|LeapDroid|KOPLAYER|iTools")
 			GUICtrlSetState($hIpt_Instance, $GUI_DISABLE)
 		Case "BlueStacks3"
-			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|MEmu|Droid4X|Nox|LeapDroid|KOPLAYER|iTools")
+			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|BlueStacks4|MEmu|Droid4X|Nox|LeapDroid|KOPLAYER|iTools")
+		Case "BlueStacks4"
+			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|BlueStacks3|MEmu|Droid4X|Nox|LeapDroid|KOPLAYER|iTools")
 		Case "MEmu"
-			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|BlueStacks3|Droid4X|Nox|LeapDroid|KOPLAYER|iTools")
+			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|BlueStacks3|BlueStacks4|Droid4X|Nox|LeapDroid|KOPLAYER|iTools")
 		Case "Droid4X"
-			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|BlueStacks3|MEmu|Nox|LeapDroid|KOPLAYER|iTools")
+			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|BlueStacks3|BlueStacks4|MEmu|Nox|LeapDroid|KOPLAYER|iTools")
 		Case "Nox"
-			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|BlueStacks3|MEmu|Droid4X|LeapDroid|KOPLAYER|iTools")
+			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|BlueStacks3|BlueStacks4|MEmu|Droid4X|LeapDroid|KOPLAYER|iTools")
 		Case "LeapDroid"
-			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|BlueStacks3|MEmu|Droid4X|Nox|KOPLAYER|iTools")
+			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|BlueStacks3|BlueStacks4|MEmu|Droid4X|Nox|KOPLAYER|iTools")
 		Case "KOPLAYER"
-			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|BlueStacks3|MEmu|Droid4X|Nox|LeapDroid|iTools")
+			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|BlueStacks3|BlueStacks4|MEmu|Droid4X|Nox|LeapDroid|iTools")
 		Case "iTools"
-			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|BlueStacks3|MEmu|Droid4X|Nox|LeapDroid|KOPLAYER")
+			GUICtrlSetData($hCmb_Emulator, "BlueStacks|BlueStacks2|BlueStacks3|BlueStacks4|MEmu|Droid4X|Nox|LeapDroid|KOPLAYER")
 		Case Else
 			MsgBox($MB_OK, "Error", "Oops, as it looks like you changed Data in the Config File.Pleae delete all corrupted Sections!", 0, $g_hGUI_Edit)
 	EndSwitch
@@ -649,6 +624,8 @@ Func GUI_Edit()
 					GUICtrlSetState($hIpt_Instance, $GUI_ENABLE)
 					Switch $sSelectedEmulator
 						Case "BlueStacks3"
+							GUICtrlSetData($hIpt_Instance, "Android_")
+						Case "BlueStacks4"
 							GUICtrlSetData($hIpt_Instance, "Android_")
 						Case "MEmu"
 							GUICtrlSetData($hIpt_Instance, "MEmu_")
@@ -806,7 +783,7 @@ Func RunSetup()
 			If $sLstbx_SelItem <> "" Then
 				ReadIni($sLstbx_SelItem)
 				Local $sEmulator = $g_sIniEmulator
-				If $g_sIniEmulator = "BlueStacks3" Then $sEmulator = "BlueStacks2"
+				If $g_sIniEmulator = "BlueStacks3" Or "BlueStacks4" Then $sEmulator = "BlueStacks2"
 				$aParameters = StringSplit($g_sIniParameters, "")
 				Local $sSpecialParameter = $aParameters[1] = 1 ? " /nowatchdog" : "" & $aParameters[2] = 1 ? " /dock1" : "" & $aParameters[3] = 1 ? " /dock2" : "" & $aParameters[4] = 1 ? " /dpiaware" : "" & $aParameters[5] = 1 ? " /debug" : "" & $aParameters[6] = 1 ? " /minigui" : "" & $aParameters[7] = 1 ? " /hideandroid" : ""
 				_GUICtrlStatusBar_SetText($g_hLog, "Running: " & $g_sIniProfile)
@@ -832,7 +809,7 @@ Func CreateShortcut()
 			If $sLstbx_SelItem <> "" Then
 				ReadIni($sLstbx_SelItem)
 				Local $sEmulator = $g_sIniEmulator
-				If $g_sIniEmulator = "BlueStacks3" Then $sEmulator = "BlueStacks2"
+				If $g_sIniEmulator = "BlueStacks3" Or "BlueStacks4" Then $sEmulator = "BlueStacks2"
 				$aParameters = StringSplit($g_sIniParameters, "")
 				Local $sSpecialParameter = $aParameters[1] = 1 ? " /nowatchdog" : "" & $aParameters[2] = 1 ? " /dock1" : "" & $aParameters[3] = 1 ? " /dock2" : "" & $aParameters[4] = 1 ? " /dpiaware" : "" & $aParameters[5] = 1 ? " /debug" : "" & $aParameters[6] = 1 ? " /minigui" : "" & $aParameters[7] = 1 ? " /hideandroid" : ""
 				If FileExists($g_sIniDir & "\" & $g_sBotFile) Then
@@ -1062,7 +1039,7 @@ EndFunc   ;==>WM_NOTIFY
 Func UpdateSelect()
 
 	FileMove(@ScriptDir & "\" & @ScriptName, @ScriptDir & "\" & "SelectBotOLD" & $g_sVersion & ".exe")
-	$hUpdateFile = InetGet("https://github.com/Fliegerfaust33/SelectBot/raw/master/SelectBot.Exe", @ScriptDir & "\SelectBot.exe", $INET_FORCERELOAD, $INET_DOWNLOADBACKGROUND)
+	$hUpdateFile = InetGet("https://github.com/blakebill/SelectBot/raw/master/SelectBot.Exe", @ScriptDir & "\SelectBot.exe", $INET_FORCERELOAD, $INET_DOWNLOADBACKGROUND)
 	Do
 		Sleep(250)
 	Until InetGetInfo($hUpdateFile, $INET_DOWNLOADCOMPLETE)
@@ -1076,7 +1053,7 @@ EndFunc   ;==>UpdateSelect
 
 Func CheckUpdate()
 	$sTempPath = @MyDocumentsDir & "\SelectBot_Info.txt"
-	$hUpdateFile = InetGet("https://raw.githubusercontent.com/Fliegerfaust33/SelectBot/master/SelectBot_Info.txt", $sTempPath, $INET_FORCERELOAD, $INET_DOWNLOADBACKGROUND)
+	$hUpdateFile = InetGet("https://raw.githubusercontent.com/blakebill/SelectBot/master/SelectBot_Info.txt", $sTempPath, $INET_FORCERELOAD, $INET_DOWNLOADBACKGROUND)
 	Do
 		Sleep(250)
 	Until InetGetInfo($hUpdateFile, $INET_DOWNLOADCOMPLETE)
@@ -1095,7 +1072,7 @@ Func ChangeLog()
 	Local $sTitle, $sMessage, $sDate
 
 	$sTempPath = @MyDocumentsDir & "SelectBot_Info.txt"
-	$hUpdateFile = InetGet("https://raw.githubusercontent.com/Fliegerfaust33/SelectBot/master/SelectBot_Info.txt", $sTempPath, $INET_FORCERELOAD, $INET_DOWNLOADBACKGROUND)
+	$hUpdateFile = InetGet("https://raw.githubusercontent.com/blakebill/SelectBot/master/SelectBot_Info.txt", $sTempPath, $INET_FORCERELOAD, $INET_DOWNLOADBACKGROUND)
 	Do
 		Sleep(250)
 	Until InetGetInfo($hUpdateFile, $INET_DOWNLOADCOMPLETE)
@@ -1247,6 +1224,15 @@ Func GetBlueStacksPath()
 	Return $sBlueStacksPath
 EndFunc   ;==>GetBlueStacksPath
 
+Func GetBlueStacks4Path()
+	$sBlueStacks4Path = RegRead($HKLM & "\SOFTWARE\BlueStacks\", "InstallDir")
+	If $sBlueStacks4Path = "" And FileExists(@ProgramFilesDir & "\BlueStacks\" & HD-Player.exe) = 1 Then
+		$sBlueStacks4Path = @ProgramFilesDir & "\BlueStacks\"
+	EndIf
+
+	Return $sBlueStacks4Path
+EndFunc
+
 Func GetiToolsPath()
 	Local $siTools_Path = ""
 	If $siTools_Path <> "" And FileExists($siTools_Path & "\iToolsAVM.exe") = 0 Then
@@ -1292,7 +1278,10 @@ Func IsAndroidInstalled($sAndroid)
 			$sPath = GetBlueStacksPath()
 			$bPlusMode = RegRead($HKLM & "\SOFTWARE\BlueStacks\", "Engine") = "plus"
 			$sFile = "HD-Frontend.exe"
-			If $bPlusMode Then $sFile = "HD-Plus-Frontend.exe"
+			If $bPlusMode Then $sFile = "HD-Plus-Frontend.exe"		
+		Case "BlueStacks4"
+			$sPath = GetBlueStacks4Path()
+			$sFile = "HD-Player.exe"
 		Case "iTools"
 			$sPath = GetiToolsPath()
 			$sFile = "iToolsAVM.exe"
@@ -1309,6 +1298,8 @@ Func GetInstanceMgrPath($sAndroid)
 	Switch $sAndroid
 		Case "BlueStacks3"
 			$sManagerPath = GetBlueStacksPath() & "BstkVMMgr.exe"
+		Case "BlueStacks4"
+			$sManagerPath = GetBlueStacks4Path() & "BstkVMMgr.exe"
 		Case "MEmu"
 			$sManagerPath = EnvGet("MEmuHyperv_Path") & "\MEmuManage.exe"
 			If FileExists($sManagerPath) = 0 Then
